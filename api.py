@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from translator import get_build
+import time
 
 class TranslationRequest(BaseModel):
     text: str
@@ -26,7 +27,10 @@ async def shutdown_event():
 @app.post("/translate")
 async def translate(request: TranslationRequest):
     try:
+        start = time.time()
         translation = await tl.translate(request.text, src=request.src, trg=request.trg)
+        end = time.time()
+        print(f"Translation took {end - start} seconds")
         return {"translated_text": translation}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
