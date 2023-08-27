@@ -1,0 +1,5 @@
+uvicorn
+asyncio
+requests
+pathlib
+fastapi
